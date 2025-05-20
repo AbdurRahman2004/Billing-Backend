@@ -1,0 +1,55 @@
+# Compiled class files
+target/
+build/
+
+# Logs
+*.log
+
+# Environment and credentials
+*.env
+application.properties
+application.yml
+application-dev.properties
+application-prod.properties
+
+# IntelliJ / Eclipse / VS Code project files
+.idea/
+*.iml
+*.classpath
+*.project
+*.settings/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Git metadata
+*.swp
+
+# Java/Maven specific
+*.class
+*.jar
+*.war
+*.ear
+!src/main/resources/static/**/   # if you want to allow static files
+
+# Maven
+.mvn/
+!mvnw
+!mvnw.cmd
+
+# Gradle (if you're using Gradle)
+.gradle/
+build/
+!gradlew
+!gradlew.bat
+
+# Test reports
+test-output/
+surefire-reports/
+
+# Node modules (if frontend is here)
+node_modules/
+
+# Generated files (e.g., if using Lombok)
+*.lombok.config
