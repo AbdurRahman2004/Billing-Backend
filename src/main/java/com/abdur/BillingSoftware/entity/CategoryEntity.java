@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "tbl_category")
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder // Enables the builder pattern to create objects step-by-step, especially for classes with many fields.
+@Data  // This is a shortcut annotation that bundles several Lombok annotations together.
+@NoArgsConstructor // Generates a constructor with no arguments:
+@AllArgsConstructor // Generates a constructor that includes all fields in your class:
 public class CategoryEntity {
 
     @Id
