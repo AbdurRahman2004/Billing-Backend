@@ -3,12 +3,16 @@ package com.abdur.BillingSoftware.controller;
 
 import com.abdur.BillingSoftware.io.AuthRequest;
 import com.abdur.BillingSoftware.io.AuthResponse;
+import com.abdur.BillingSoftware.service.UserService;
+import com.abdur.BillingSoftware.service.impl.AppUserDetailsService;
+import com.abdur.BillingSoftware.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,11 +27,20 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final AppUserDetailsService appUserDetailsService;
+
+    private final UserService userService;
+
+    private final JwtUtil jwtUtil;
 
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) throws Exception{
          authenticate(request.getEmail(),request.getPassword());
+         final UserDetails userDetails = appUserDetailsService.loadUserByUsername(request.getEmail());
+         final String jwtToken =  jwtUtil.generateToken(userDetails);
+         String role = userService.getUserRole(request.getEmail());
+         return new AuthResponse(request.getEmail(), role , jwtToken);
     }
 
     private void authenticate(String email , String password) throws  Exception{
