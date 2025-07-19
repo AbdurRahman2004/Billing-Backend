@@ -28,6 +28,6 @@ public class UserEntity {
     @Column(updatable = false)
     private Timestamp createdAt;
     @UpdateTimestamp
-    private Timestamp updatesAt;
+    private Timestamp updatedAt;
 
 }
