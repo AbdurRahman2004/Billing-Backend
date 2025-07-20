@@ -59,6 +59,6 @@ public class FileUploadServiceImpl implements FileUploadService {
                 .build();
 
         s3Client.deleteObject(deleteObjectRequest);
-        return false;
+        return true;
     }
 }
