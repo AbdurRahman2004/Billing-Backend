@@ -3,10 +3,7 @@ package com.abdur.BillingSoftware.service.impl;
 
 import com.abdur.BillingSoftware.entity.OrderEntity;
 import com.abdur.BillingSoftware.entity.OrderItemEntity;
-import com.abdur.BillingSoftware.io.OrderRequest;
-import com.abdur.BillingSoftware.io.OrderResponse;
-import com.abdur.BillingSoftware.io.PaymentDetails;
-import com.abdur.BillingSoftware.io.PaymentMethod;
+import com.abdur.BillingSoftware.io.*;
 import com.abdur.BillingSoftware.repository.OrderEntityRepository;
 import com.abdur.BillingSoftware.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +31,9 @@ public class OrderServiceImpl implements OrderService {
                 . collect(Collectors.toList());
 
         newOrder.setItems(orderItems);
+        System.out.println("Before working");
         newOrder = orderEntityRepository.save(newOrder);
+        System.out.println("Before working");
         return convertToResponse(newOrder);
     }
 
@@ -99,5 +98,29 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse verifyPayment(PaymentVerificationRequest request) {
+       OrderEntity existingOrder =  orderEntityRepository.findByOrderId(request.getOrderId())
+                .orElseThrow(()-> new RuntimeException("Order not found"));
+
+        if(!verifyRazorPaySignature(request.getRazorpayOrderId(),request.getRazorpayPaymentId(),request.getRazorpaySignature())){
+            throw new RuntimeException("Payment verification failed");
+        }
+
+        PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
+        paymentDetails.setRazorpayOrderId(request.getRazorpayOrderId());
+        paymentDetails.setRazorpayPaymentId(request.getRazorpayPaymentId());
+        paymentDetails.setRazorpaySignature(request.getRazorpaySignature());
+        paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
+
+        existingOrder = orderEntityRepository.save(existingOrder);
+        return convertToResponse(existingOrder);
+    }
+
+    private boolean verifyRazorPaySignature(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature) {
+        // IN production a proper signature verification should be done;
+        return true;
     }
 }
