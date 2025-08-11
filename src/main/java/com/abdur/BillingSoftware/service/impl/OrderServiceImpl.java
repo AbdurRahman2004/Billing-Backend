@@ -122,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public double sumSalesByDate(LocalDate date) {
+    public Double sumSalesByDate(LocalDate date) {
        return  orderEntityRepository.sumSaleByDate(date);
     }
 

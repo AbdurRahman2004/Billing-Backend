@@ -21,12 +21,12 @@ public class DashboardController {
     @GetMapping
     public DashboardResponse getDashboardData(){
         LocalDate today = LocalDate.now();
-        Double todaySale = orderService.sumSalesByDate(today);
         Long todayOrderCount = orderService.countByOrderDate(today);
         List<OrderResponse> recentOrders = orderService.findRecentOrders();
 
+        Double todaySale = orderService.sumSalesByDate(today);
         return new DashboardResponse(
-                todaySale != null ? todaySale:0.0,
+                todaySale != null ? todaySale : 0.0,
                 todayOrderCount != null ? todayOrderCount : 0,
                 recentOrders
         );
