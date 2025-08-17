@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173" , "https://d4e81f031291.ngrok-free.app"));
+        config.setAllowedOrigins(List.of("http://localhost:5173" , "https://billing-software-abdur.vercel.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // add this!
         config.setAllowCredentials(true);
