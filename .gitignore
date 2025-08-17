@@ -33,7 +33,7 @@ Thumbs.db
 !src/main/resources/static/**/   # if you want to allow static files
 
 # Maven
-.mvn/
+#.mvn/
 !mvnw
 !mvnw.cmd
 
