@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtRequsetFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtRequsetFilter, UsernamePasswordAuthenticationFilter.class); // after passing the jwtfilter it reaches to the controller
 
         return http.build();
     }
@@ -80,6 +80,11 @@ public class SecurityConfig {
 
 
     /*
+    *
+    * As the AuthentcationManager is set up as a bean so it return a class name ProvideManager which implements
+    the Authentication Manager so it is called first and maintained as bean and during login it check for
+    the prvider the only provider availablbe is daoProvider so it perfrom the pre built code
+    *
     * AuthenticationManager.authenticate() is called with the credentials.
      It passes the request to DaoAuthenticationProvider.
      DaoAuthenticationProvider uses your AppUserDetailsService to:

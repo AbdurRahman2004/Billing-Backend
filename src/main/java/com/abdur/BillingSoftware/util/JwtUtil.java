@@ -20,13 +20,13 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     public String generateToken(UserDetails userDetails){
-        Map<String , Object> claiams = new HashMap<>();
-        return createToken(claiams,userDetails.getUsername());
+        Map<String , Object> claims = new HashMap<>();  // role if the user is get here
+        return createToken(claims,userDetails.getUsername());
     }
 
-    private String createToken(Map<String,Object> claiams,String subject){
+    private String createToken(Map<String,Object> claims,String subject){
         return Jwts.builder()
-                .setClaims(claiams)
+                .setClaims(claims)  // whole JWT PAYLOADS (SUBJECT , EXP , ISSUED AT , ROLE(CUSTOM CLAIM ) All these are Claims
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) //10 hours expirations
@@ -35,14 +35,14 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token){
-        return extraClaim(token, Claims::getSubject);
+        return extraClaim(token, Claims::getSubject); // claim->claim.getSubject
     }
 
     public Date extractExpiration(String token){
-        return extraClaim(token,Claims::getExpiration);
+        return extraClaim(token,Claims::getExpiration);  // claim->claim.getSubject
     }
 
-    public <T> T extraClaim(String token , Function<Claims,T> claimsResolver){
+    public <T> T extraClaim(String token , Function<Claims,T> claimsResolver){ // here the claimResolver is treated as claim->claim.getSubject
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
